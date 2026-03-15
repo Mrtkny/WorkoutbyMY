@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Workout Tracker</title>
+
+<style>
+
+body{
+font-family:Arial;
+background:#121212;
+color:white;
+text-align:center;
+}
+
+button{
+padding:15px;
+margin:10px;
+font-size:18px;
+border:none;
+border-radius:10px;
+background:#27ae60;
+color:white;
+}
+
+input{
+padding:10px;
+margin:5px;
+font-size:16px;
+}
+
+</style>
+
+</head>
+
+<body>
+
+<h1>Workout Tracker</h1>
+
+<h2 id="day"></h2>
+
+<div id="workout"></div>
+
+<h3>Kayıt</h3>
+
+<input id="exercise" placeholder="Hareket">
+<input id="weight" placeholder="Kg">
+
+<button onclick="save()">Kaydet</button>
+
+<ul id="log"></ul>
+
+<script>
+
+const program = {
+"Pazartesi":["Leg Press","Chest Press","Lat Pulldown"],
+"Çarşamba":["Leg Press","Shoulder Press","Triceps Pushdown"],
+"Cuma":["Leg Press","Seated Row","Biceps Curl"]
+}
+
+const days=["Pazar","Pazartesi","Salı","Çarşamba","Perşembe","Cuma","Cumartesi"]
+
+let today=days[new Date().getDay()]
+
+document.getElementById("day").innerText=today
+
+if(program[today]){
+document.getElementById("workout").innerHTML=program[today].join("<br>")
+}
+else{
+document.getElementById("workout").innerHTML="Bugün dinlenme"
+}
+
+function save(){
+
+let ex=document.getElementById("exercise").value
+let kg=document.getElementById("weight").value
+
+let li=document.createElement("li")
+li.innerText=ex+" - "+kg+" kg"
+
+document.getElementById("log").appendChild(li)
+
+}
+
+</script>
+
+</body>
+</html>
