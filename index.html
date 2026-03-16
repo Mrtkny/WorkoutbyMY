@@ -2,7 +2,6 @@
 <html>
 
 <head>
-
 <meta charset="UTF-8">
 <title>GA Dispatch Tool</title>
 
@@ -16,11 +15,14 @@ text-align:center;
 padding:40px;
 }
 
+#loginBox{
+margin-top:200px;
+}
+
 input{
 padding:10px;
 font-size:18px;
 margin:5px;
-text-transform:uppercase;
 }
 
 button{
@@ -32,6 +34,10 @@ border-radius:6px;
 color:white;
 margin:5px;
 cursor:pointer;
+}
+
+#app{
+display:none;
 }
 
 #result{
@@ -46,18 +52,21 @@ line-height:1.6;
 
 <body>
 
-<script>
+<div id="loginBox">
 
-let password = prompt("Enter password")
+<h2>Login</h2>
 
-if(password !== "falcon8x"){
+<input type="password" id="passwordInput" placeholder="Password">
 
-alert("Wrong password")
-location.reload()
+<br>
 
-}
+<button onclick="checkPassword()">Enter</button>
 
-</script>
+<p id="loginMsg"></p>
+
+</div>
+
+<div id="app">
 
 <h1>GA Dispatch Tool</h1>
 
@@ -71,9 +80,33 @@ location.reload()
 
 <div id="result"></div>
 
+</div>
+
 <script>
 
 let airports = {}
+
+function checkPassword(){
+
+let pass = document.getElementById("passwordInput").value
+
+if(pass === "falcon8x"){
+
+document.getElementById("loginBox").style.display="none"
+document.getElementById("app").style.display="block"
+
+loadAirports()
+
+}
+else{
+
+document.getElementById("loginMsg").innerHTML="Wrong password"
+
+}
+
+}
+
+function loadAirports(){
 
 fetch("airports.csv")
 .then(res => res.text())
@@ -83,36 +116,41 @@ let rows = text.split(/\r?\n/)
 
 rows.slice(1).forEach(row => {
 
-let cols = row.split(",")
+let cols = row.replace(/"/g,"").split(",")
 
-let icao = cols[0]
+let ident = cols[1]
+let type = cols[2]
+let name = cols[3]
+let lat = cols[4]
+let lon = cols[5]
+let country = cols[8]
+let iata = cols[13]
 
-if(!icao) return
+if(!ident) return
+if(ident.length !== 4) return
+if(type === "heliport") return
+if(type === "seaplane_base") return
 
-airports[icao] = {
+airports[ident] = {
 
-iata: cols[1],
-name: cols[2],
-country: cols[3],
-lat: cols[4],
-lon: cols[5],
-runways: cols[6],
-fbo: cols[7],
-handling: cols[8],
-fuel: cols[9],
-private_notes: cols[10],
-commercial_notes: cols[11]
+name: name,
+country: country,
+lat: lat,
+lon: lon,
+iata: iata
 
 }
 
 let option=document.createElement("option")
-option.value=icao
+option.value=ident
 
 document.getElementById("icaoList").appendChild(option)
 
 })
 
 })
+
+}
 
 function getLocalTime(){
 
@@ -150,36 +188,12 @@ html+="Coordinates: "+airport.lat+" , "+airport.lon+"<br>"
 
 html+="<br><b>Local Time</b><br>"+getLocalTime()
 
-html+="<br><br><b>Runways</b><br>"+airport.runways
-
-html+="<br><br><b>Handling</b><br>"+airport.handling
-
-html+="<br><b>FBO</b><br>"+airport.fbo
-
-html+="<br><b>Fuel</b><br>"+airport.fuel
-
 html+="<br><br><b>Permit</b><br>"
 
-html+='<button onclick="showPrivate(\''+code+'\')">Private</button>'
-html+='<button onclick="showCommercial(\''+code+'\')">Commercial</button>'
+html+='<button onclick="alert(\'Private permit notes not entered\')">Private</button>'
+html+='<button onclick="alert(\'Commercial permit notes not entered\')">Commercial</button>'
 
 document.getElementById("result").innerHTML=html
-
-}
-
-function showPrivate(code){
-
-let airport = airports[code]
-
-alert(airport.private_notes)
-
-}
-
-function showCommercial(code){
-
-let airport = airports[code]
-
-alert(airport.commercial_notes)
 
 }
 
@@ -188,12 +202,6 @@ document.getElementById("icao").addEventListener("keypress", function(event){
 if(event.key === "Enter"){
 searchAirport()
 }
-
-})
-
-document.getElementById("icao").addEventListener("change", function(){
-
-searchAirport()
 
 })
 
