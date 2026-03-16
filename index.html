@@ -2,6 +2,7 @@
 <html>
 
 <head>
+
 <meta charset="UTF-8">
 <title>GA Dispatch Tool</title>
 
@@ -127,6 +128,8 @@ let country = cols[8]
 let iata = cols[13]
 
 if(!ident) return
+
+// sadece gerçek ICAO havalimanları
 if(ident.length !== 4) return
 if(type === "heliport") return
 if(type === "seaplane_base") return
@@ -190,10 +193,22 @@ html+="<br><b>Local Time</b><br>"+getLocalTime()
 
 html+="<br><br><b>Permit</b><br>"
 
-html+='<button onclick="alert(\'Private permit notes not entered\')">Private</button>'
-html+='<button onclick="alert(\'Commercial permit notes not entered\')">Commercial</button>'
+html+='<button onclick="showPrivate()">Private</button>'
+html+='<button onclick="showCommercial()">Commercial</button>'
 
 document.getElementById("result").innerHTML=html
+
+}
+
+function showPrivate(){
+
+alert("Private permit notes not entered")
+
+}
+
+function showCommercial(){
+
+alert("Commercial permit notes not entered")
 
 }
 
