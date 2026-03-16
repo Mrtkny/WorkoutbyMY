@@ -76,10 +76,15 @@ function save(){
 let ex=document.getElementById("exercise").value
 let kg=document.getElementById("weight").value
 
-let li=document.createElement("li")
-li.innerText=ex+" - "+kg+" kg"
+let entry = ex + " - " + kg + " kg"
 
-document.getElementById("log").appendChild(li)
+let logs = JSON.parse(localStorage.getItem("workoutLogs")) || []
+
+logs.push(entry)
+
+localStorage.setItem("workoutLogs", JSON.stringify(logs))
+
+displayLogs()
 
 }
 
