@@ -25,11 +25,13 @@ text-transform:uppercase;
 
 button{
 padding:10px;
-font-size:18px;
+font-size:16px;
 background:#1abc9c;
 border:none;
 border-radius:6px;
 color:white;
+margin:5px;
+cursor:pointer;
 }
 
 #result{
@@ -88,11 +90,15 @@ let icao = cols[0]
 if(!icao) return
 
 airports[icao] = {
+
 name: cols[2],
 country: cols[3],
 lat: cols[4],
 lon: cols[5],
-runways: cols[6]
+runways: cols[6],
+private_notes: cols[7],
+commercial_notes: cols[8]
+
 }
 
 let option=document.createElement("option")
@@ -143,10 +149,41 @@ html+="<br><b>Local Time</b><br>"+getLocalTime()
 html+="<br><br><b>Runways</b><br>"+airport.runways
 
 html+="<br><br><b>Permit</b><br>"
-html+='<input type="checkbox"> Commercial<br>'
-html+='<input type="checkbox"> Private<br>'
+
+html+='<button onclick="showPrivate(\''+code+'\')">Private</button>'
+html+='<button onclick="showCommercial(\''+code+'\')">Commercial</button>'
 
 document.getElementById("result").innerHTML=html
+
+}
+
+function showPrivate(code){
+
+let airport = airports[code]
+
+if(!airport.private_notes){
+
+alert("No private permit notes")
+return
+
+}
+
+alert(airport.private_notes)
+
+}
+
+function showCommercial(code){
+
+let airport = airports[code]
+
+if(!airport.commercial_notes){
+
+alert("No commercial permit notes")
+return
+
+}
+
+alert(airport.commercial_notes)
 
 }
 
