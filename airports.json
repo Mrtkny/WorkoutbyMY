@@ -1,0 +1,28 @@
+{
+"LTFM":{"name":"Istanbul Airport","country":"TR","lat":41.2753,"lon":28.7519},
+"LTFJ":{"name":"Sabiha Gokcen","country":"TR","lat":40.8986,"lon":29.3092},
+"LTAI":{"name":"Antalya Airport","country":"TR","lat":36.8987,"lon":30.8005},
+"LTBJ":{"name":"Izmir Adnan Menderes","country":"TR","lat":38.2924,"lon":27.1569},
+"LTFE":{"name":"Milas Bodrum","country":"TR","lat":37.2506,"lon":27.6643},
+
+"EGLL":{"name":"London Heathrow","country":"UK","lat":51.4706,"lon":-0.4619},
+"EGKK":{"name":"London Gatwick","country":"UK","lat":51.1537,"lon":-0.1821},
+"EGGW":{"name":"London Luton","country":"UK","lat":51.8747,"lon":-0.3683},
+
+"LFPG":{"name":"Paris CDG","country":"FR","lat":49.0097,"lon":2.5479},
+"LFPB":{"name":"Paris Le Bourget","country":"FR","lat":48.9694,"lon":2.4414},
+
+"EDDF":{"name":"Frankfurt","country":"DE","lat":50.0379,"lon":8.5622},
+"EDDM":{"name":"Munich","country":"DE","lat":48.3538,"lon":11.7861},
+
+"OMDB":{"name":"Dubai Intl","country":"UAE","lat":25.2532,"lon":55.3657},
+"OMDW":{"name":"Dubai Al Maktoum","country":"UAE","lat":24.8964,"lon":55.1614},
+"OMAA":{"name":"Abu Dhabi","country":"UAE","lat":24.4329,"lon":54.6511},
+
+"LGAV":{"name":"Athens","country":"GR","lat":37.9364,"lon":23.9475},
+
+"LFMN":{"name":"Nice","country":"FR","lat":43.6653,"lon":7.2150},
+
+"KJFK":{"name":"New York JFK","country":"US","lat":40.6413,"lon":-73.7781},
+"KLAX":{"name":"Los Angeles","country":"US","lat":33.9416,"lon":-118.4085}
+}
