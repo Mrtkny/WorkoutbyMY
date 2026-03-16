@@ -4,28 +4,27 @@
 <head>
 
 <meta charset="UTF-8">
-<title>Airport Ops Tool</title>
+<title>GA Dispatch Tool</title>
 
 <style>
 
 body{
 font-family:Arial;
-background:#0b0f14;
+background:#0c1116;
 color:white;
 text-align:center;
 padding:40px;
 }
 
-input{
-padding:12px;
-font-size:20px;
-text-transform:uppercase;
+input,select{
+padding:10px;
+font-size:18px;
+margin:5px;
 }
 
 button{
-padding:12px;
+padding:10px;
 font-size:18px;
-margin-left:10px;
 background:#1abc9c;
 border:none;
 border-radius:6px;
@@ -44,7 +43,14 @@ line-height:1.6;
 
 <body>
 
-<h1>Airport Ops Tool</h1>
+<h1>GA Dispatch Tool</h1>
+
+<select id="aircraft">
+<option>Falcon 8X</option>
+<option>Falcon 6X</option>
+</select>
+
+<br>
 
 <input id="icao" placeholder="ICAO">
 
@@ -57,51 +63,44 @@ line-height:1.6;
 const airports = {
 
 "LTFM":{
+
 name:"Istanbul Airport",
-city:"Istanbul / Turkey",
+
 elevation:"325 ft",
+
 runways:[
-"17L / 35R – 4100 m",
-"17R / 35L – 4100 m",
-"16L / 34R – 3750 m"
+"17L/35R – 4100 m",
+"17R/35L – 4100 m"
 ],
-freq:{
-tower:"118.600",
-ground:"121.750",
-atis:"128.550"
-},
-coords:"41.2753N 28.7519E"
+
+ops:{
+fbo:"IGA Business Aviation",
+handling:"IGA Handling",
+fuel:"Jet A1"
 },
 
-"LTBA":{
-name:"Istanbul Ataturk",
-city:"Istanbul / Turkey",
-elevation:"163 ft",
-runways:[
-"05/23 – 3000 m",
-"17/35 – 3000 m"
-],
-freq:{
-tower:"118.100",
-ground:"121.900",
-atis:"126.450"
-},
-coords:"40.9769N 28.8146E"
+notes:"Slots required / GA parking limited"
+
 },
 
-"LTAI":{
-name:"Antalya Airport",
-city:"Antalya / Turkey",
-elevation:"177 ft",
+"LTFJ":{
+
+name:"Sabiha Gokcen",
+
+elevation:"312 ft",
+
 runways:[
-"18C / 36C – 3400 m"
+"06/24 – 3000 m"
 ],
-freq:{
-tower:"118.700",
-ground:"121.900",
-atis:"128.000"
+
+ops:{
+fbo:"Celebi",
+handling:"Celebi",
+fuel:"Jet A1"
 },
-coords:"36.8987N 30.8005E"
+
+notes:"Busy GA traffic"
+
 }
 
 }
@@ -109,6 +108,8 @@ coords:"36.8987N 30.8005E"
 function searchAirport(){
 
 let code=document.getElementById("icao").value.toUpperCase()
+
+let aircraft=document.getElementById("aircraft").value
 
 let a=airports[code]
 
@@ -118,26 +119,27 @@ let runways=a.runways.join("<br>")
 
 document.getElementById("result").innerHTML=
 
-"<h2>"+a.name+"</h2>" +
+"<h2>"+code+" – "+a.name+"</h2>"+
 
-"<b>City:</b> "+a.city+"<br>" +
-"<b>Elevation:</b> "+a.elevation+"<br>" +
+"<b>Aircraft:</b> "+aircraft+"<br>"+
 
-"<br><b>Runways</b><br>"+runways +
+"<br><b>Elevation</b><br>"+a.elevation+
 
-"<br><br><b>Frequencies</b><br>" +
-"Tower: "+a.freq.tower+"<br>" +
-"Ground: "+a.freq.ground+"<br>" +
-"ATIS: "+a.freq.atis +
+"<br><br><b>Runways</b><br>"+runways+
 
-"<br><br><b>Coordinates</b><br>" +
-a.coords
+"<br><br><b>FBO</b><br>"+a.ops.fbo+
+
+"<br><b>Handling</b><br>"+a.ops.handling+
+
+"<br><b>Fuel</b><br>"+a.ops.fuel+
+
+"<br><br><b>Ops Notes</b><br>"+a.notes
 
 }
 
 else{
 
-document.getElementById("result").innerHTML="Airport not found"
+document.getElementById("result").innerHTML="Airport not in database"
 
 }
 
