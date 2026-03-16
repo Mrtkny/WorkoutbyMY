@@ -1,0 +1,49 @@
+{
+"LTFM":{
+"fbo":"IGA Business Aviation",
+"handling":"IGA Handling",
+"fuel":"Jet A1",
+"phone":"+90 212 465 5555",
+"notes":"Slots required / GA parking limited"
+},
+
+"LTFJ":{
+"fbo":"Celebi",
+"handling":"Celebi Handling",
+"fuel":"Jet A1",
+"phone":"+90 216 588 8800",
+"notes":"Busy GA traffic"
+},
+
+"LTAI":{
+"fbo":"Celebi",
+"handling":"Celebi Handling",
+"fuel":"Jet A1",
+"phone":"+90 242 330 3600",
+"notes":"Seasonal GA traffic high"
+},
+
+"OMDB":{
+"fbo":"Jetex",
+"handling":"DNATA",
+"fuel":"Jet A1",
+"phone":"+971 4 216 4444",
+"notes":"Major GA hub"
+},
+
+"OMAA":{
+"fbo":"Royal Jet",
+"handling":"ADAC",
+"fuel":"Jet A1",
+"phone":"+971 2 505 5555",
+"notes":"VIP operations common"
+},
+
+"LFMN":{
+"fbo":"Signature Flight Support",
+"handling":"Signature",
+"fuel":"Jet A1",
+"phone":"+33 4 93 21 33 00",
+"notes":"Busy during summer"
+}
+}
