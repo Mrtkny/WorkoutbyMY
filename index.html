@@ -84,39 +84,30 @@ let rows = text.split(/\r?\n/)
 
 rows.slice(1).forEach(row => {
 
-let cols = row.split(/,(?=(?:(?:[^"]*"){2})*[^"]*$)/)
+let cols = row.split(",")
 
-let ident = cols[1]
-let type = cols[2]
-let name = cols[3]
-let lat = cols[4]
-let lon = cols[5]
-let country = cols[8]
-let iata = cols[13]
+let icao = cols[0]
 
-if(!ident) return
+if(!icao) return
 
-ident = ident.replace(/"/g,"")
+airports[icao] = {
 
-// sadece gerçek ICAO
-if(ident.length !== 4) return
-if(type === '"heliport"') return
-if(type === '"seaplane_base"') return
-
-airports[ident] = {
-
-name: name.replace(/"/g,""),
-country: country.replace(/"/g,""),
-lat: lat,
-lon: lon,
-iata: iata ? iata.replace(/"/g,"") : "",
-private_notes: "Private permit info not entered yet",
-commercial_notes: "Commercial permit info not entered yet"
+iata: cols[1],
+name: cols[2],
+country: cols[3],
+lat: cols[4],
+lon: cols[5],
+runways: cols[6],
+fbo: cols[7],
+handling: cols[8],
+fuel: cols[9],
+private_notes: cols[10],
+commercial_notes: cols[11]
 
 }
 
 let option=document.createElement("option")
-option.value=ident
+option.value=icao
 
 document.getElementById("icaoList").appendChild(option)
 
@@ -153,12 +144,20 @@ return
 
 let html=""
 
-html+="<h2>"+code+" - "+airport.name+"</h2>"
+html+="<h2>"+code+" - "+airport.name+" ("+airport.iata+")</h2>"
 
 html+="Country: "+airport.country+"<br>"
 html+="Coordinates: "+airport.lat+" , "+airport.lon+"<br>"
 
 html+="<br><b>Local Time</b><br>"+getLocalTime()
+
+html+="<br><br><b>Runways</b><br>"+airport.runways
+
+html+="<br><br><b>Handling</b><br>"+airport.handling
+
+html+="<br><b>FBO</b><br>"+airport.fbo
+
+html+="<br><b>Fuel</b><br>"+airport.fuel
 
 html+="<br><br><b>Permit</b><br>"
 
