@@ -4,14 +4,13 @@
 <head>
 
 <meta charset="UTF-8">
-
-<title>Airport Database</title>
+<title>Airport Ops Tool</title>
 
 <style>
 
 body{
 font-family:Arial;
-background:#111;
+background:#0b0f14;
 color:white;
 text-align:center;
 padding:40px;
@@ -19,7 +18,7 @@ padding:40px;
 
 input{
 padding:12px;
-font-size:18px;
+font-size:20px;
 text-transform:uppercase;
 }
 
@@ -27,7 +26,7 @@ button{
 padding:12px;
 font-size:18px;
 margin-left:10px;
-background:#27ae60;
+background:#1abc9c;
 border:none;
 border-radius:6px;
 color:white;
@@ -35,7 +34,8 @@ color:white;
 
 #result{
 margin-top:30px;
-font-size:20px;
+font-size:18px;
+line-height:1.6;
 }
 
 </style>
@@ -44,11 +44,11 @@ font-size:20px;
 
 <body>
 
-<h1>Airport Database</h1>
+<h1>Airport Ops Tool</h1>
 
-<input id="icao" placeholder="ICAO kodu">
+<input id="icao" placeholder="ICAO">
 
-<button onclick="searchAirport()">Ara</button>
+<button onclick="searchAirport()">SEARCH</button>
 
 <div id="result"></div>
 
@@ -56,25 +56,52 @@ font-size:20px;
 
 const airports = {
 
-"LTBA":{
-name:"Istanbul Ataturk Airport",
-city:"Istanbul",
-runway:"3000 m",
-freq:"Tower 118.1"
-},
-
 "LTFM":{
 name:"Istanbul Airport",
-city:"Istanbul",
-runway:"4100 m",
-freq:"Tower 118.6"
+city:"Istanbul / Turkey",
+elevation:"325 ft",
+runways:[
+"17L / 35R – 4100 m",
+"17R / 35L – 4100 m",
+"16L / 34R – 3750 m"
+],
+freq:{
+tower:"118.600",
+ground:"121.750",
+atis:"128.550"
+},
+coords:"41.2753N 28.7519E"
+},
+
+"LTBA":{
+name:"Istanbul Ataturk",
+city:"Istanbul / Turkey",
+elevation:"163 ft",
+runways:[
+"05/23 – 3000 m",
+"17/35 – 3000 m"
+],
+freq:{
+tower:"118.100",
+ground:"121.900",
+atis:"126.450"
+},
+coords:"40.9769N 28.8146E"
 },
 
 "LTAI":{
 name:"Antalya Airport",
-city:"Antalya",
-runway:"3400 m",
-freq:"Tower 118.7"
+city:"Antalya / Turkey",
+elevation:"177 ft",
+runways:[
+"18C / 36C – 3400 m"
+],
+freq:{
+tower:"118.700",
+ground:"121.900",
+atis:"128.000"
+},
+coords:"36.8987N 30.8005E"
 }
 
 }
@@ -83,22 +110,34 @@ function searchAirport(){
 
 let code=document.getElementById("icao").value.toUpperCase()
 
-let airport=airports[code]
+let a=airports[code]
 
-if(airport){
+if(a){
+
+let runways=a.runways.join("<br>")
 
 document.getElementById("result").innerHTML=
 
-"<b>"+airport.name+"</b><br>"+
-"City: "+airport.city+"<br>"+
-"Runway: "+airport.runway+"<br>"+
-"Frequency: "+airport.freq
+"<h2>"+a.name+"</h2>" +
+
+"<b>City:</b> "+a.city+"<br>" +
+"<b>Elevation:</b> "+a.elevation+"<br>" +
+
+"<br><b>Runways</b><br>"+runways +
+
+"<br><br><b>Frequencies</b><br>" +
+"Tower: "+a.freq.tower+"<br>" +
+"Ground: "+a.freq.ground+"<br>" +
+"ATIS: "+a.freq.atis +
+
+"<br><br><b>Coordinates</b><br>" +
+a.coords
 
 }
 
 else{
 
-document.getElementById("result").innerHTML="Airport bulunamadı"
+document.getElementById("result").innerHTML="Airport not found"
 
 }
 
