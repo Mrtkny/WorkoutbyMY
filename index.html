@@ -1,32 +1,41 @@
 <!DOCTYPE html>
 <html>
+
 <head>
+
 <meta charset="UTF-8">
-<title>Workout Tracker</title>
+
+<title>Airport Database</title>
 
 <style>
 
 body{
 font-family:Arial;
-background:#121212;
+background:#111;
 color:white;
 text-align:center;
-}
-
-button{
-padding:15px;
-margin:10px;
-font-size:18px;
-border:none;
-border-radius:10px;
-background:#27ae60;
-color:white;
+padding:40px;
 }
 
 input{
-padding:10px;
-margin:5px;
-font-size:16px;
+padding:12px;
+font-size:18px;
+text-transform:uppercase;
+}
+
+button{
+padding:12px;
+font-size:18px;
+margin-left:10px;
+background:#27ae60;
+border:none;
+border-radius:6px;
+color:white;
+}
+
+#result{
+margin-top:30px;
+font-size:20px;
 }
 
 </style>
@@ -35,95 +44,68 @@ font-size:16px;
 
 <body>
 
-<h1>Workout Tracker</h1>
+<h1>Airport Database</h1>
 
-<h2 id="day"></h2>
+<input id="icao" placeholder="ICAO kodu">
 
-<div id="workout"></div>
+<button onclick="searchAirport()">Ara</button>
 
-<h3>Set Timer</h3>
-
-<div id="timer">0</div>
-
-<button onclick="startTimer(30)">30 sn</button>
-<button onclick="startTimer(60)">60 sn</button>
-<button onclick="startTimer(90)">90 sn</button> 
-
-<h3>Kayıt</h3>
-
-<input id="exercise" placeholder="Hareket">
-<input id="weight" placeholder="Kg">
-
-<button onclick="save()">Kaydet</button>
-
-<ul id="log"></ul>
+<div id="result"></div>
 
 <script>
 
-const program = {
-"Pazartesi":["Leg Press","Chest Press","Lat Pulldown"],
-"Çarşamba":["Leg Press","Shoulder Press","Triceps Pushdown"],
-"Cuma":["Leg Press","Seated Row","Biceps Curl"]
+const airports = {
+
+"LTBA":{
+name:"Istanbul Ataturk Airport",
+city:"Istanbul",
+runway:"3000 m",
+freq:"Tower 118.1"
+},
+
+"LTFM":{
+name:"Istanbul Airport",
+city:"Istanbul",
+runway:"4100 m",
+freq:"Tower 118.6"
+},
+
+"LTAI":{
+name:"Antalya Airport",
+city:"Antalya",
+runway:"3400 m",
+freq:"Tower 118.7"
 }
 
-const days=["Pazar","Pazartesi","Salı","Çarşamba","Perşembe","Cuma","Cumartesi"]
-
-let today=days[new Date().getDay()]
-
-document.getElementById("day").innerText=today
-
-if(program[today]){
-document.getElementById("workout").innerHTML=program[today].join("<br>")
 }
+
+function searchAirport(){
+
+let code=document.getElementById("icao").value.toUpperCase()
+
+let airport=airports[code]
+
+if(airport){
+
+document.getElementById("result").innerHTML=
+
+"<b>"+airport.name+"</b><br>"+
+"City: "+airport.city+"<br>"+
+"Runway: "+airport.runway+"<br>"+
+"Frequency: "+airport.freq
+
+}
+
 else{
-document.getElementById("workout").innerHTML="Bugün dinlenme"
-}
 
-function save(){
-
-let ex=document.getElementById("exercise").value
-let kg=document.getElementById("weight").value
-
-let entry = ex + " - " + kg + " kg"
-
-let logs = JSON.parse(localStorage.getItem("workoutLogs")) || []
-
-logs.push(entry)
-
-localStorage.setItem("workoutLogs", JSON.stringify(logs))
-
-displayLogs()
+document.getElementById("result").innerHTML="Airport bulunamadı"
 
 }
-displayLogs()
+
+}
+
 </script>
-let timer
-let time
 
-function startTimer(seconds){
-
-clearInterval(timer)
-
-time = seconds
-
-document.getElementById("timer").innerText = time
-
-timer = setInterval(function(){
-
-time--
-
-document.getElementById("timer").innerText = time
-
-if(time <= 0){
-
-clearInterval(timer)
-
-alert("Dinlenme bitti!")
-
-}
-
-},1000)
-
-}
 </body>
+
 </html>
