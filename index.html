@@ -41,6 +41,13 @@ font-size:16px;
 
 <div id="workout"></div>
 
+<h3>Set Timer</h3>
+
+<div id="timer">0</div>
+
+<button onclick="startTimer(30)">30 sn</button>
+<button onclick="startTimer(60)">60 sn</button>
+<button onclick="startTimer(90)">90 sn</button>  
 <h3>Kayıt</h3>
 
 <input id="exercise" placeholder="Hareket">
@@ -89,6 +96,33 @@ displayLogs()
 }
 displayLogs()
 </script>
+let timer
+let time
 
+function startTimer(seconds){
+
+clearInterval(timer)
+
+time = seconds
+
+document.getElementById("timer").innerText = time
+
+timer = setInterval(function(){
+
+time--
+
+document.getElementById("timer").innerText = time
+
+if(time <= 0){
+
+clearInterval(timer)
+
+alert("Dinlenme bitti!")
+
+}
+
+},1000)
+
+}
 </body>
 </html>
