@@ -89,6 +89,15 @@ ops=data
 
 })
 
+function getUTCTime(){
+
+let now=new Date()
+
+return now.getUTCHours().toString().padStart(2,'0') + ":" +
+       now.getUTCMinutes().toString().padStart(2,'0') + " (UTC)"
+
+}
+
 function searchAirport(){
 
 let code=document.getElementById("icao").value.toUpperCase()
@@ -112,9 +121,17 @@ html+="<h2>"+code+" - "+airport.name+"</h2>"
 html+="Country: "+airport.country+"<br>"
 html+="Coordinates: "+airport.lat+" , "+airport.lon+"<br>"
 
+html+="<br><b>UTC Time</b><br>"+getUTCTime()
+
+html+="<br><br><b>Runways</b><br>"+airport.runways
+
+html+="<br><br><b>Permit</b><br>"
+html+='<input type="checkbox"> Commercial<br>'
+html+='<input type="checkbox"> Private<br>'
+
 if(op){
 
-html+="<br><b>FBO</b><br>"+op.fbo
+html+="<br><br><b>FBO</b><br>"+op.fbo
 html+="<br><b>Handling</b><br>"+op.handling
 html+="<br><b>Fuel</b><br>"+op.fuel
 html+="<br><b>Phone</b><br>"+op.phone
