@@ -48,7 +48,7 @@ line-height:1.6;
 
 let password = prompt("Enter password")
 
-if(password !== "setair"){
+if(password !== "falcon8x"){
 
 document.body.innerHTML = "<h1>Access denied</h1>"
 throw new Error("Access denied")
@@ -71,34 +71,36 @@ throw new Error("Access denied")
 
 <script>
 
-let airports={}
-let ops={}
+let airports = {}
 
-fetch("airports.json")
-.then(res=>res.json())
-.then(data=>{
+fetch("airports.csv")
+.then(res => res.text())
+.then(data => {
 
-airports=data
+let rows = data.split("\n")
 
-let list=document.getElementById("icaoList")
+rows.slice(1).forEach(row => {
 
-Object.keys(data).forEach(code=>{
+let cols = row.split(",")
+
+let icao = cols[0]
+
+if(!icao) return
+
+airports[icao] = {
+name: cols[2],
+country: cols[3],
+lat: cols[4],
+lon: cols[5],
+runways: cols[6]
+}
 
 let option=document.createElement("option")
+option.value=icao
 
-option.value=code
-
-list.appendChild(option)
-
-})
+document.getElementById("icaoList").appendChild(option)
 
 })
-
-fetch("ops.json")
-.then(res=>res.json())
-.then(data=>{
-
-ops=data
 
 })
 
@@ -121,7 +123,6 @@ function searchAirport(){
 let code=document.getElementById("icao").value.toUpperCase()
 
 let airport=airports[code]
-let op=ops[code]
 
 if(!airport){
 
@@ -144,16 +145,6 @@ html+="<br><br><b>Runways</b><br>"+airport.runways
 html+="<br><br><b>Permit</b><br>"
 html+='<input type="checkbox"> Commercial<br>'
 html+='<input type="checkbox"> Private<br>'
-
-if(op){
-
-html+="<br><br><b>FBO</b><br>"+op.fbo
-html+="<br><b>Handling</b><br>"+op.handling
-html+="<br><b>Fuel</b><br>"+op.fuel
-html+="<br><b>Phone</b><br>"+op.phone
-html+="<br><b>Notes</b><br>"+op.notes
-
-}
 
 document.getElementById("result").innerHTML=html
 
