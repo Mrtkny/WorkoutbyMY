@@ -16,10 +16,11 @@ text-align:center;
 padding:40px;
 }
 
-input,select{
+input{
 padding:10px;
 font-size:18px;
 margin:5px;
+text-transform:uppercase;
 }
 
 button{
@@ -45,14 +46,9 @@ line-height:1.6;
 
 <h1>GA Dispatch Tool</h1>
 
-<select id="aircraft">
-<option>Falcon 8X</option>
-<option>Falcon 6X</option>
-</select>
+<input list="icaoList" id="icao" placeholder="ICAO">
 
-<br>
-
-<input id="icao" placeholder="ICAO">
+<datalist id="icaoList"></datalist>
 
 <button onclick="searchAirport()">SEARCH</button>
 
@@ -60,88 +56,71 @@ line-height:1.6;
 
 <script>
 
-const airports = {
+let airports={}
+let ops={}
 
-"LTFM":{
+fetch("airports.json")
+.then(res=>res.json())
+.then(data=>{
 
-name:"Istanbul Airport",
+airports=data
 
-elevation:"325 ft",
+let list=document.getElementById("icaoList")
 
-runways:[
-"17L/35R – 4100 m",
-"17R/35L – 4100 m"
-],
+Object.keys(data).forEach(code=>{
 
-ops:{
-fbo:"IGA Business Aviation",
-handling:"IGA Handling",
-fuel:"Jet A1"
-},
+let option=document.createElement("option")
 
-notes:"Slots required / GA parking limited"
+option.value=code
 
-},
+list.appendChild(option)
 
-"LTFJ":{
+})
 
-name:"Sabiha Gokcen",
+})
 
-elevation:"312 ft",
+fetch("ops.json")
+.then(res=>res.json())
+.then(data=>{
 
-runways:[
-"06/24 – 3000 m"
-],
+ops=data
 
-ops:{
-fbo:"Celebi",
-handling:"Celebi",
-fuel:"Jet A1"
-},
-
-notes:"Busy GA traffic"
-
-}
-
-}
+})
 
 function searchAirport(){
 
 let code=document.getElementById("icao").value.toUpperCase()
 
-let aircraft=document.getElementById("aircraft").value
+let airport=airports[code]
 
-let a=airports[code]
+let op=ops[code]
 
-if(a){
+if(!airport){
 
-let runways=a.runways.join("<br>")
+document.getElementById("result").innerHTML="Airport not found"
 
-document.getElementById("result").innerHTML=
-
-"<h2>"+code+" – "+a.name+"</h2>"+
-
-"<b>Aircraft:</b> "+aircraft+"<br>"+
-
-"<br><b>Elevation</b><br>"+a.elevation+
-
-"<br><br><b>Runways</b><br>"+runways+
-
-"<br><br><b>FBO</b><br>"+a.ops.fbo+
-
-"<br><b>Handling</b><br>"+a.ops.handling+
-
-"<br><b>Fuel</b><br>"+a.ops.fuel+
-
-"<br><br><b>Ops Notes</b><br>"+a.notes
+return
 
 }
 
-else{
+let html=""
 
-document.getElementById("result").innerHTML="Airport not in database"
+html+="<h2>"+code+" - "+airport.name+"</h2>"
+
+html+="Country: "+airport.country+"<br>"
+html+="Coordinates: "+airport.lat+" , "+airport.lon+"<br>"
+
+if(op){
+
+html+="<br><b>FBO</b><br>"+op.fbo
+html+="<br><b>Handling</b><br>"+op.handling
+html+="<br><b>Fuel</b><br>"+op.fuel
+html+="<br><b>Phone</b><br>"+op.phone
+html+="<br><b>Notes</b><br>"+op.notes
 
 }
+
+document.getElementById("result").innerHTML=html
 
 }
 
