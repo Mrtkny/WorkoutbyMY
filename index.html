@@ -81,59 +81,42 @@ fetch("airports.csv")
 
 let rows = data.split("\n")
 
-let headers = rows[0].split(",")
-
-let icaoIndex = headers.indexOf("ICAO")
-let nameIndex = headers.indexOf("Airport_Name")
-let countryIndex = headers.indexOf("Country")
-let latIndex = headers.indexOf("Latitude")
-let lonIndex = headers.indexOf("Longitude")
-let runwayIndex = headers.indexOf("Runways")
-let privateIndex = headers.indexOf("Private_Permit_Notes")
-let commercialIndex = headers.indexOf("Commercial_Permit_Notes")
-
 rows.slice(1).forEach(row => {
 
-let cols = row.split(",")
+let cols = row.replace(/"/g,"").split(",")
 
-let icao = cols[icaoIndex]
+let ident = cols[1]
+let type = cols[2]
+let name = cols[3]
+let lat = cols[4]
+let lon = cols[5]
+let country = cols[8]
+let iata = cols[13]
 
-if(!icao) return
+// sadece gerçek ICAO havalimanları
+if(!ident) return
+if(ident.length !== 4) return
+if(type === "heliport") return
+if(type === "seaplane_base") return
 
-airports[icao] = {
+airports[ident] = {
 
-name: cols[nameIndex],
-country: cols[countryIndex],
-lat: cols[latIndex],
-lon: cols[lonIndex],
-runways: cols[runwayIndex],
-private_notes: cols[privateIndex],
-commercial_notes: cols[commercialIndex]
+name: name,
+country: country,
+lat: lat,
+lon: lon,
+iata: iata
 
 }
 
 let option=document.createElement("option")
-option.value=icao
+option.value=ident
 
 document.getElementById("icaoList").appendChild(option)
 
 })
 
 })
-
-function getLocalTime(){
-
-let now=new Date()
-
-let hours=now.getHours().toString().padStart(2,'0')
-let minutes=now.getMinutes().toString().padStart(2,'0')
-
-let offset=-now.getTimezoneOffset()/60
-let sign=offset>=0?"+":""
-
-return hours+":"+minutes+" (UTC"+sign+offset+")"
-
-}
 
 function searchAirport(){
 
@@ -155,46 +138,7 @@ html+="<h2>"+code+" - "+airport.name+"</h2>"
 html+="Country: "+airport.country+"<br>"
 html+="Coordinates: "+airport.lat+" , "+airport.lon+"<br>"
 
-html+="<br><b>Local Time</b><br>"+getLocalTime()
-
-html+="<br><br><b>Runways</b><br>"+airport.runways
-
-html+="<br><br><b>Permit</b><br>"
-
-html+='<button onclick="showPrivate(\''+code+'\')">Private</button>'
-html+='<button onclick="showCommercial(\''+code+'\')">Commercial</button>'
-
 document.getElementById("result").innerHTML=html
-
-}
-
-function showPrivate(code){
-
-let airport = airports[code]
-
-if(!airport.private_notes){
-
-alert("No private permit notes")
-return
-
-}
-
-alert(airport.private_notes)
-
-}
-
-function showCommercial(code){
-
-let airport = airports[code]
-
-if(!airport.commercial_notes){
-
-alert("No commercial permit notes")
-return
-
-}
-
-alert(airport.commercial_notes)
 
 }
 
