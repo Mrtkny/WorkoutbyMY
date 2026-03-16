@@ -52,8 +52,9 @@ let password = prompt("Enter password")
 
 if(password !== "falcon8x"){
 
-document.body.innerHTML = "<h1>Access denied</h1>"
-throw new Error("Access denied")
+document.body.innerHTML = "<h1 style='margin-top:200px'>Access Denied</h1>"
+
+while(true){}
 
 }
 
@@ -77,13 +78,13 @@ let airports = {}
 
 fetch("airports.csv")
 .then(res => res.text())
-.then(data => {
+.then(text => {
 
-let rows = data.split("\n")
+let rows = text.split(/\r?\n/)
 
 rows.slice(1).forEach(row => {
 
-let cols = row.replace(/"/g,"").split(",")
+let cols = row.split(/,(?=(?:(?:[^"]*"){2})*[^"]*$)/)
 
 let ident = cols[1]
 let type = cols[2]
@@ -93,19 +94,24 @@ let lon = cols[5]
 let country = cols[8]
 let iata = cols[13]
 
-// sadece gerçek ICAO havalimanları
 if(!ident) return
+
+ident = ident.replace(/"/g,"")
+
+// sadece gerçek ICAO
 if(ident.length !== 4) return
-if(type === "heliport") return
-if(type === "seaplane_base") return
+if(type === '"heliport"') return
+if(type === '"seaplane_base"') return
 
 airports[ident] = {
 
-name: name,
-country: country,
+name: name.replace(/"/g,""),
+country: country.replace(/"/g,""),
 lat: lat,
 lon: lon,
-iata: iata
+iata: iata ? iata.replace(/"/g,"") : "",
+private_notes: "Private permit info not entered yet",
+commercial_notes: "Commercial permit info not entered yet"
 
 }
 
@@ -117,6 +123,20 @@ document.getElementById("icaoList").appendChild(option)
 })
 
 })
+
+function getLocalTime(){
+
+let now=new Date()
+
+let hours=now.getHours().toString().padStart(2,'0')
+let minutes=now.getMinutes().toString().padStart(2,'0')
+
+let offset=-now.getTimezoneOffset()/60
+let sign=offset>=0?"+":""
+
+return hours+":"+minutes+" (UTC"+sign+offset+")"
+
+}
 
 function searchAirport(){
 
@@ -138,7 +158,30 @@ html+="<h2>"+code+" - "+airport.name+"</h2>"
 html+="Country: "+airport.country+"<br>"
 html+="Coordinates: "+airport.lat+" , "+airport.lon+"<br>"
 
+html+="<br><b>Local Time</b><br>"+getLocalTime()
+
+html+="<br><br><b>Permit</b><br>"
+
+html+='<button onclick="showPrivate(\''+code+'\')">Private</button>'
+html+='<button onclick="showCommercial(\''+code+'\')">Commercial</button>'
+
 document.getElementById("result").innerHTML=html
+
+}
+
+function showPrivate(code){
+
+let airport = airports[code]
+
+alert(airport.private_notes)
+
+}
+
+function showCommercial(code){
+
+let airport = airports[code]
+
+alert(airport.commercial_notes)
 
 }
 
