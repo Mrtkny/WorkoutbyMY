@@ -88,6 +88,7 @@ fetch("ops.json")
 ops=data
 
 })
+
 function getLocalTime(){
 
 let now=new Date()
@@ -96,7 +97,6 @@ let hours=now.getHours().toString().padStart(2,'0')
 let minutes=now.getMinutes().toString().padStart(2,'0')
 
 let offset=-now.getTimezoneOffset()/60
-
 let sign=offset>=0?"+":""
 
 return hours+":"+minutes+" (UTC"+sign+offset+")"
@@ -108,13 +108,11 @@ function searchAirport(){
 let code=document.getElementById("icao").value.toUpperCase()
 
 let airport=airports[code]
-
 let op=ops[code]
 
 if(!airport){
 
 document.getElementById("result").innerHTML="Airport not found"
-
 return
 
 }
@@ -126,7 +124,7 @@ html+="<h2>"+code+" - "+airport.name+"</h2>"
 html+="Country: "+airport.country+"<br>"
 html+="Coordinates: "+airport.lat+" , "+airport.lon+"<br>"
 
-html+="<br><b>UTC Time</b><br>"+getUTCTime()
+html+="<br><b>Local Time</b><br>"+getLocalTime()
 
 html+="<br><br><b>Runways</b><br>"+airport.runways
 
