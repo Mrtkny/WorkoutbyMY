@@ -44,6 +44,19 @@ line-height:1.6;
 
 <body>
 
+<script>
+
+let password = prompt("Enter password")
+
+if(password !== "setair"){
+
+document.body.innerHTML = "<h1>Access denied</h1>"
+throw new Error("Access denied")
+
+}
+
+</script>
+
 <h1>GA Dispatch Tool</h1>
 
 <input list="icaoList" id="icao" placeholder="ICAO">
